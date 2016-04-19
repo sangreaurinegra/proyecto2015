@@ -1,0 +1,22 @@
+﻿@model MvcAzureTest.Models.VMStorage
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Azure storage</h2>
+
+@using(Html.BeginForm(MVC.Home.ActionNames.IngresarCuenta, MVC.Home.Name, FormMethod.Post, new { id="formAzure", enctype="multipart/form-data" }))
+{
+    <span>Nombre de cuenta:</span>@Html.TextBoxFor(model => model.NombreCuenta)<br/>
+    <span>Clave de cuenta:</span>@Html.TextBoxFor(model => model.ClaveCuenta)
+
+    <input type="submit" value="Enviar">
+    
+    
+}
+
+<script>
+
+</script>

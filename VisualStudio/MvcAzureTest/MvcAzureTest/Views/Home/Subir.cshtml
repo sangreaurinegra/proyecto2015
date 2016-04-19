@@ -1,0 +1,18 @@
+﻿@model MvcAzureTest.Models.VMStorage
+
+@{
+    ViewBag.Title = "Subir";
+}
+
+<h2>Subir</h2>
+
+@using(Html.BeginForm(MVC.Home.ActionNames.Subir, MVC.Home.Name, FormMethod.Post, new { id="formAzure", enctype="multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.NombreCuenta)<br/>
+    @Html.HiddenFor(model => model.ClaveCuenta)
+    <span>Contenedor:</span>@Html.DropDownListFor(model => model.Contenedor, Model.Contenedores)<br/>
+    <input type="file" name="Archivo">
+    
+    
+    <input type="submit" value="Enviar">
+}
