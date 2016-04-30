@@ -23,6 +23,8 @@ public class Main extends Configured implements Tool {
 
 		logger.info("Inicio");
 		
+		// algo
+		
 		for (int i = 0; i < args.length; i++) {
 			//System.out.println("Hadoop - arg[" + i + "] es: " + args[i]);
 			logger.info("Hadoop - arg[" + i + "] es: " + args[i]);
