@@ -1,7 +1,7 @@
 #!/bin/bash
 
 image=$1
-tag="0.0.1"
+tag="0.1.0"
 
 if [ $# = 0 ]
 then
@@ -23,7 +23,8 @@ function docker_build()
 {
 	cd $1
 	echo -e "\n\nsudo docker build -t $1:$tag ."
-	/usr/bin/time -f "real  %e" sudo docker build -t $1:$tag .
+	#/usr/bin/time -f "real  %e" 
+	sudo docker build -t $1:$tag .
 	cd ..
 }
 

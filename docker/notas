@@ -1,0 +1,6 @@
+
+# para construir el master
+./build-image.sh master 
+
+# para construir el slave
+./build-image.sh slave
