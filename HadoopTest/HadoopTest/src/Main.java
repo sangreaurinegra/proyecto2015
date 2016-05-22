@@ -18,6 +18,7 @@ public class Main extends Configured implements Tool {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("Entro al main");
+		
 		int res = ToolRunner.run(new Main(), args);
         System.exit(res);
 	}
@@ -25,8 +26,8 @@ public class Main extends Configured implements Tool {
 	@Override
 	public int run(String[] arg0) throws Exception {
 		System.out.println("Entro a run");
-		
 		Configuration conf = new Configuration();
+	//	conf.set("mapreduce.framework.name", "local");
 		
 	    Job job = Job.getInstance(conf, "word count");
 	    
