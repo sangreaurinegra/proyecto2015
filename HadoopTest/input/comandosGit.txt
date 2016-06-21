@@ -1,0 +1,40 @@
+
+
+
+git add .  (el . para agregar todo)
+git commit
+git push
+
+git status
+
+git pull (update del repo local)
+
+git checkout . (elimina los cambios antes de hacer el add)
+
+
+sangreaurinegra
+los3....
+
+
+
+
+
+
+Para borrar archivos o carpetas también “arriba” en nuestro respositorio (bitbucket, github…) se usa el comando “rm” de git siguiendo los siguientes pasos.
+
+1.A Si quieres eliminar un archivo:
+	
+git rm miarchivo.php
+
+1.B. Si quieres eliminar una carpeta:
+	
+git rm -r micarpeta
+
+2. Creamos el commit
+	
+git commit -m "elimino archivos innecesarios"
+
+3. Subimos los cambios al repositorio
+	
+git push
+
