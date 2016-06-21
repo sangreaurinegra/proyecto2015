@@ -1,11 +1,14 @@
-package edu.proyecto.maper;
+package edu.proyecto;
 
 import java.util.logging.Logger;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+
+import edu.proyecto.maper.RayoCosmicoMapper;
 
 public class Main extends Configured implements Tool {
 	
@@ -41,7 +44,10 @@ public class Main extends Configured implements Tool {
 		conf.set("yarn.scheduler.maximum-allocation-mb", "5040");
 		conf.set("mapreduce.task.timeout", "18000000");//5 horas
 
-
+		Job job = Job.getInstance(conf, "Rayo Cosmico Conf");
+		
+		job.setJarByClass(Main.class);
+	    job.setMapperClass(RayoCosmicoMapper.class);
    
 
 		return 0;

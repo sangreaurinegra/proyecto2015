@@ -1,4 +1,4 @@
-package edu.proyecto.pruebas;
+package edu.proyecto.xpruebas;
 import java.util.logging.Logger;
 
 public class PruLogger {
