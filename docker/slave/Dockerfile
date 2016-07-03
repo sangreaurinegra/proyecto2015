@@ -1,5 +1,5 @@
 # Docker file Master que extiene el master prepara copias locales y ajustes para la ejecucion en cluster
-FROM sangreaurinegra/slave:0.1.0
+FROM sangreaurinegra/slave:0.1.1
 
 MAINTAINER SangreAurinegra <sangreaurinegra@gmail.com>
 
