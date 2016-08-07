@@ -7,4 +7,4 @@ MAINTAINER SangreAurinegra <sangreaurinegra@gmail.com>
 
 RUN rm /root/run-wordcount.sh
 
-ADD resources/* /root/
+ADD resources/ /root/resources/
