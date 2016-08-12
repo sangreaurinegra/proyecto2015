@@ -1,22 +1,97 @@
 package edu.proyecto.maper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class RayoCosmicoMapper extends Mapper<Object, Text, Text, IntWritable> {
+import edu.proyecto.file.KeyImage;
 
+public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
+
+	//public class Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT>
+	public static String NOMBRE_IMAGEN_RAW = "img_raw.fits";
+	public static String NOMBRE_IMAGEN_SPT = "img_spt.fits";
+	
 	@Override
-	protected void map(Object key, Text value, Mapper<Object, Text, Text, IntWritable>.Context context)
+	protected void map(KeyImage key, Text value, Context context)
 			throws IOException, InterruptedException {
 		
 		System.out.println("MAP");
 		
-		Process process = new ProcessBuilder("mcell.exe", "-errfile", "errorMcell.txt", "entradaMap.mdl").start();
+		String nombreImagen = "iaa901jxq"; // key.toString()
 		
-//		
+		
+//		con el nombre de la imagen se ejecutan con el par de archivos , nombreImagen_raw.fits y nombreImagen_spt.fits 
+		//read los archivos al nodo
+		
+		System.out.println("Entro al Map");
+        System.out.println("Imagen: " + nombreImagen);
+
+        String nombreImagenRaw = nombreImagen+NOMBRE_IMAGEN_RAW;
+        System.out.println("Map1 comienza a leer y guardar "+nombreImagenRaw);
+        
+        try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenRaw))) {
+            File archivo = new File(nombreImagenRaw);
+            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buf)) > 0) {
+                    fos.write(buf, 0, bytesRead);
+                    fos.flush();
+                    context.progress();
+                }
+                fos.close();
+                fis.close();
+            }
+        }
+        System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenRaw);
+        
+        String nombreImagenSpt = nombreImagen+NOMBRE_IMAGEN_SPT;
+        System.out.println("Map1 comienza a leer y guardar "+nombreImagenSpt);
+        
+        try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenSpt))) {
+            File archivo = new File(nombreImagenSpt);
+            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buf)) > 0) {
+                    fos.write(buf, 0, bytesRead);
+                    fos.flush();
+                    context.progress();
+                }
+                fos.close();
+                fis.close();
+            }
+        }
+        System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenSpt);
+        
+        
+        Process process = new ProcessBuilder("map1.sh", nombreImagen).start(); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
+        
+		
+        InputStream is = process.getInputStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String line;
+
+        System.out.println("Map1 ejecutando "+nombreImagen);
+        String res = "";
+        while ((line = br.readLine()) != null) {
+            res = res.concat(line);
+            context.progress();                     
+        }
+        
+        
 //		Text word = new Text();
 //		IntWritable one = new IntWritable(1);
 //		

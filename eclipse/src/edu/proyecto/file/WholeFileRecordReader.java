@@ -14,21 +14,21 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 
 public class WholeFileRecordReader extends
-        RecordReader<KeyFits, BytesWritable> {
+        RecordReader<KeyImage, BytesWritable> {
 
     private FileSplit imagen;
     private Configuration conf;
 
     private final BytesWritable currValue = new BytesWritable();
-    private final KeyFits key = new KeyFits();
+    private final KeyImage key = new KeyImage();
     private boolean fileProcessed = false;
     
     private TaskAttemptContext context;
 
     @Override
-    public void initialize(InputSplit split, TaskAttemptContext context)
+    public void initialize(InputSplit archivoImagen, TaskAttemptContext context)
             throws IOException, InterruptedException {
-        this.imagen = (FileSplit) split;
+        this.imagen = (FileSplit) archivoImagen;
         this.conf = context.getConfiguration();
         this.context = context;
 
@@ -64,7 +64,7 @@ public class WholeFileRecordReader extends
     }
 
     @Override
-    public KeyFits getCurrentKey() throws IOException,
+    public KeyImage getCurrentKey() throws IOException,
             InterruptedException {
         return this.key;
     }

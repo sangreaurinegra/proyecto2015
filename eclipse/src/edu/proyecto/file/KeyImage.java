@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edu.proyecto.file;
 
 
@@ -13,7 +9,7 @@ import java.util.Objects;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 
-public class KeyFits implements WritableComparable {
+public class KeyImage implements WritableComparable<KeyImage> {
 
 
     private final Text nombreImg = new Text();
@@ -41,12 +37,12 @@ public class KeyFits implements WritableComparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        KeyFits sentiment = (KeyFits) o;
+    public int compareTo(KeyImage keyFits) {
+    	
         Text thisValue = this.nombreImg;
-        Text thatValue = sentiment.nombreImg;
+        Text thatValue = keyFits.nombreImg;
 
-        return this.equals(o) ? 0 : (thatValue.compareTo(thisValue) == 0 ? -1 : 1);
+        return this.equals(keyFits) ? 0 : (thatValue.compareTo(thisValue) == 0 ? -1 : 1);
     }
 
     @Override
@@ -66,7 +62,7 @@ public class KeyFits implements WritableComparable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final KeyFits other = (KeyFits) obj;
+        final KeyImage other = (KeyImage) obj;
         return Objects.equals(this.nombreImg, other.nombreImg);
     }
 
