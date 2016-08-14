@@ -15,17 +15,19 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import edu.proyecto.file.KeyImage;
 
-public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
+public class IdemCr extends Mapper<KeyImage, Text, KeyImage, Text> {
 
 	//public class Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT>
-	public static String NOMBRE_IMAGEN_RAW = "img_raw.fits";
-	public static String NOMBRE_IMAGEN_SPT = "img_spt.fits";
+	public static String NOMBRE_IMAGEN_RAW_HEAD = "img_raw.fits.head";
+	public static String NOMBRE_IMAGEN_SPT_HEAD = "img_spt.fits.head";
+	
+	public static String NOMBRE_IMAGEN_FITS = "img.fits.conv.fits.cro.fits";
 	
 	@Override
 	protected void map(KeyImage key, Text value, Context context)
 			throws IOException, InterruptedException {
 		
-		System.out.println("MAP1");
+		System.out.println("MAP2");
 		
 		String nombreImagen = "iaa901jxq"; // key.toString()
 		
@@ -36,7 +38,7 @@ public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
 		System.out.println("Entro al Map");
         System.out.println("Imagen: " + nombreImagen);
 
-        String nombreImagenRaw = nombreImagen+NOMBRE_IMAGEN_RAW;
+        String nombreImagenRaw = nombreImagen+NOMBRE_IMAGEN_RAW_HEAD;
         System.out.println("Map1 comienza a leer y guardar "+nombreImagenRaw);
         
         try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenRaw))) {
@@ -53,10 +55,10 @@ public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
                 fis.close();
             }
         }
-        System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenRaw);
+        System.out.println("Map2 finalizo lectura y guardado de "+nombreImagenRaw);
         
-        String nombreImagenSpt = nombreImagen+NOMBRE_IMAGEN_SPT;
-        System.out.println("Map1 comienza a leer y guardar "+nombreImagenSpt);
+        String nombreImagenSpt = nombreImagen+NOMBRE_IMAGEN_SPT_HEAD;
+        System.out.println("Map2 comienza a leer y guardar "+nombreImagenSpt);
         
         try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenSpt))) {
             File archivo = new File(nombreImagenSpt);
@@ -72,10 +74,30 @@ public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
                 fis.close();
             }
         }
-        System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenSpt);
+        
+        System.out.println("Map2 finalizo lectura y guardado de "+nombreImagenRaw);
+        
+        String nombreImagenfits = nombreImagen+NOMBRE_IMAGEN_FITS;
+        System.out.println("Map2 comienza a leer y guardar "+nombreImagenfits);
+        
+        try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenfits))) {
+            File archivo = new File(nombreImagenfits);
+            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buf)) > 0) {
+                    fos.write(buf, 0, bytesRead);
+                    fos.flush();
+                    context.progress();
+                }
+                fos.close();
+                fis.close();
+            }
+        }
+        System.out.println("Map2 finalizo lectura y guardado de "+nombreImagenRaw);
         
         
-        Process process = new ProcessBuilder("map1.sh", nombreImagen).start(); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
+        Process process = new ProcessBuilder("map2.sh", nombreImagen).start(); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
         
 		
         InputStream is = process.getInputStream();
@@ -83,7 +105,7 @@ public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
         BufferedReader br = new BufferedReader(isr);
         String line;
 
-        System.out.println("Map1 ejecutando "+nombreImagen);
+        System.out.println("Map2 ejecutando "+nombreImagen);
         String res = "";
         while ((line = br.readLine()) != null) {
             res = res.concat(line);

@@ -5,4 +5,4 @@ MAINTAINER SangreAurinegra <sangreaurinegra@gmail.com>
 
 #RUN rm -r /resources
 
-#ADD resources/ /root/resources/
+ADD resources/ /root/resources/
