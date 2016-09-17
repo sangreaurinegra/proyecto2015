@@ -10,12 +10,11 @@ import java.io.InputStreamReader;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import edu.proyecto.file.KeyImage;
-
-public class IdemCr extends Mapper<KeyImage, Text, KeyImage, Text> {
+public class IdemCr extends Mapper<LongWritable, Text, LongWritable, Text> {
 
 	//public class Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT>
 	public static String NOMBRE_IMAGEN_RAW_HEAD = "img_raw.fits.head";
@@ -24,12 +23,12 @@ public class IdemCr extends Mapper<KeyImage, Text, KeyImage, Text> {
 	public static String NOMBRE_IMAGEN_FITS = "img.fits.conv.fits.cro.fits";
 	
 	@Override
-	protected void map(KeyImage key, Text value, Context context)
+	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 		
 		System.out.println("MAP2");
 		
-		String nombreImagen = "iaa901jxq"; // key.toString()
+		String nombreImagen = value.toString(); // "iaa901jxq"; // 
 		
 		
 //		con el nombre de la imagen se ejecutan con el par de archivos , nombreImagen_raw.fits y nombreImagen_spt.fits 

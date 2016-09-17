@@ -10,24 +10,23 @@ import java.io.InputStreamReader;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import edu.proyecto.file.KeyImage;
-
-public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
+public class RayoCosmicoMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
 
 	//public class Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT>
-	public static String NOMBRE_IMAGEN_RAW = "img_raw.fits";
-	public static String NOMBRE_IMAGEN_SPT = "img_spt.fits";
+	public static String NOMBRE_IMAGEN_RAW = "_raw.fits";
+	public static String NOMBRE_IMAGEN_SPT = "_spt.fits";
 	
 	@Override
-	protected void map(KeyImage key, Text value, Context context)
+	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 		
 		System.out.println("MAP1");
 		
-		String nombreImagen = "iaa901jxq"; // key.toString()
+		String nombreImagen = value.toString(); //"iaa901jxq"; // 
 		
 		
 //		con el nombre de la imagen se ejecutan con el par de archivos , nombreImagen_raw.fits y nombreImagen_spt.fits 
@@ -38,6 +37,12 @@ public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
 
         String nombreImagenRaw = nombreImagen+NOMBRE_IMAGEN_RAW;
         System.out.println("Map1 comienza a leer y guardar "+nombreImagenRaw);
+        
+        
+        //TODO borrar
+//        FileSystem fs = FileSystem.get(context.getConfiguration());
+//        fs.createNewFile(new Path("ACA"));
+//        fs.close();
         
         try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenRaw))) {
             File archivo = new File(nombreImagenRaw);
@@ -75,7 +80,7 @@ public class RayoCosmicoMapper extends Mapper<KeyImage, Text, KeyImage, Text> {
         System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenSpt);
         
         
-        Process process = new ProcessBuilder("map1.sh", nombreImagen).start(); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
+        Process process = new ProcessBuilder("../resources/map1/src/map1.sh", nombreImagen).start(); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
         
 		
         InputStream is = process.getInputStream();

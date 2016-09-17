@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -15,7 +15,7 @@ import edu.proyecto.file.ZipFileWriter;
 
 
 
-public class RayoCosmicoReducer<Key> extends Reducer<Text,IntWritable,Text,IntWritable> {
+public class RayoCosmicoReducer<Key> extends Reducer<LongWritable, Text, LongWritable, Text> {
 
 //	@Override
 //	protected void reduce(Text key, Iterable<IntWritable> values,
@@ -45,8 +45,8 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text,IntWritable,Text,IntWr
     }
 
     @Override
-    public void reduce(Text key, Iterable<IntWritable> values,
-			Reducer<Text, IntWritable, Text, IntWritable>.Context context) {
+    public void reduce(LongWritable key, Iterable<Text> values,
+			Reducer<LongWritable,Text,LongWritable,Text>.Context context) {
         System.out.println("Entro al reducer!!");
         System.out.println("Key del reducer: " + key);
         FileSystem fs;
