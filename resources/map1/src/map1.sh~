@@ -4,17 +4,12 @@ if [ -z "$1" ]
 then
         echo "No se recibio el parametro"
 else
-	eval `/home/gabriel/.ureka/ur_setup`
-
+        ur_setup
 	touch input.txt
 	rm input.txt
 	echo "$1" > input.txt
 
-	echo ECHO DESDE MAP.SH
-
-
-
-	cl < clInput.txt > cl.out 2> cl.err
+	cl < clInput.txt
 fi
 
 
