@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -84,10 +85,9 @@ public class Main extends Configured implements Tool {
         
         
 	    job.setReducerClass(RayoCosmicoReducer.class);
-		job.setOutputKeyClass(KeyImage.class);
-		job.setOutputValueClass(Text.class);
-	    
-	    
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(BytesWritable.class);
+	     
 	    job.waitForCompletion(true);
 //	    job.submit();
 	    

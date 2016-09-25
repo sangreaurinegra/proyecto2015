@@ -1,5 +1,7 @@
 package edu.proyecto.maper;
 
+import static org.apache.commons.io.FileUtils.readFileToByteArray;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -7,15 +9,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class RayoCosmicoMapper extends Mapper<LongWritable, Text, LongWritable, Text> {
+public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWritable> { //extends Mapper<LongWritable, Text, LongWritable, Text> {
 
 	//public class Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT>
 	public static String NOMBRE_IMAGEN_RAW = "_raw.fits";
 	public static String NOMBRE_IMAGEN_SPT = "_spt.fits";
+	
+	public static String NOMBRE_IMAGEN_RES = "_res.txt";
 	
 	public static String WORKING_DIR = "/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
 	
@@ -110,13 +115,13 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, LongWritable, 
         while ((line = br.readLine()) != null) {
             res = res.concat(line);
             res = res.concat("\n");
-//            context.progress();                     
+            // TODO evaluar  context.progress();                      
         }
         
         System.out.println(res);
         
         System.out.println("Map 2 inicio");
-        
+        context.progress();        
         
         Process process2 = null;
         ProcessBuilder processBuilder2 = new ProcessBuilder("bash",WORKING_DIR+"map2.sh","> salida2.out" , "2> salida2.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
@@ -135,20 +140,22 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, LongWritable, 
         while ((line2 = br2.readLine()) != null) {
             res2 = res2.concat(line2);
             res2 = res2.concat("\n");
-//            context.progress();                     
+          // TODO evaluar  context.progress();                  
         }
         
         System.out.println(res2);
         
+        context.progress(); 
         
-//		Text word = new Text();
-//		IntWritable one = new IntWritable(1);
-//		
-//		String entrada = value.toString();
-//		for(char x : entrada.toCharArray()){
-//			word.set(Character.toString(x));
-//			context.write(word, one);
-//		}
+        
+        String archivoResultado = nombreImagen+NOMBRE_IMAGEN_RES;
+        
+        byte[] buffer = readFileToByteArray(new File(WORKING_DIR+archivoResultado));
+        
+        
+        // context.write(key, salida); para el reducer
+        context.write(new Text(archivoResultado), new BytesWritable(buffer));
+
 	}
 	
 	// // crearArchivoParaMap2(nombreImagen);

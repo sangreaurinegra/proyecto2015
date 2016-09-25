@@ -23,15 +23,17 @@ import org.apache.hadoop.fs.Path;
  */
 public class ZipFileWriter {
 	Logger log = Logger.getLogger("log_file");
-    private String rootDir;
+ //   private String rootDir;
     private String zipFileName;
     private ZipOutputStream zipOutputStream;
-    private FileOutputStream fileOutputStream;
+    //private FileOutputStream fileOutputStream;
     OutputStream os;
+    
+    public static String WORKING_DIR = "/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
     
     
     public ZipFileWriter(String name) {
-    	zipFileName = "/data/" + name + ".zip";
+    	zipFileName = WORKING_DIR + name + ".zip";
     }
 
     public void setup(Configuration conf) {
@@ -40,7 +42,6 @@ public class ZipFileWriter {
     		fs = FileSystem.get(conf);
     		Path path = new Path(zipFileName);
     		os = fs.create(path);
-    		rootDir = "/data";
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
