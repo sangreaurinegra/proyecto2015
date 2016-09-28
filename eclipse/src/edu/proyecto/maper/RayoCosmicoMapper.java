@@ -4,11 +4,16 @@ import static org.apache.commons.io.FileUtils.readFileToByteArray;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -22,7 +27,10 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
 	
 	public static String NOMBRE_IMAGEN_RES = "_res.txt";
 	
-	public static String WORKING_DIR = "/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
+	public static String WORKING_DIR = "/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/workingdir/";
+	
+	String localFileRaw = "";
+	String localFileSpt = "";
 	
 	@Override
 	protected void map(LongWritable key, Text value, Context context)
@@ -53,47 +61,23 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
 
 
         String nombreImagenRaw = rutaNombreImagen+NOMBRE_IMAGEN_RAW;
+        
+        
         System.out.println("Map1 comienza a leer y guardar "+nombreImagenRaw);
         
+        localFileRaw = WORKING_DIR+nombreImagen+NOMBRE_IMAGEN_RAW; // TODO
         
-        //TODO borrar
-//        FileSystem fs = FileSystem.get(context.getConfiguration());
-//        fs.createNewFile(new Path("ACA"));
-//        fs.close();
+        copiarArchivoLocalmente(context, nombreImagenRaw, localFileRaw);
         
-//        try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenRaw))) {
-//            File archivo = new File(nombreImagenRaw);
-//            try (FileOutputStream fos = new FileOutputStream(archivo)) {
-//                byte[] buf = new byte[1024];
-//                int bytesRead;
-//                while ((bytesRead = fis.read(buf)) > 0) {
-//                    fos.write(buf, 0, bytesRead);
-//                    fos.flush();
-//                    context.progress();
-//                }
-//                fos.close();
-//                fis.close();
-//            }
-//        }
         System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenRaw);
         
         String nombreImagenSpt = rutaNombreImagen+NOMBRE_IMAGEN_SPT;
         System.out.println("Map1 comienza a leer y guardar "+nombreImagenSpt);
         
-//        try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(nombreImagenSpt))) {
-//            File archivo = new File(nombreImagenSpt);
-//            try (FileOutputStream fos = new FileOutputStream(archivo)) {
-//                byte[] buf = new byte[1024];
-//                int bytesRead;
-//                while ((bytesRead = fis.read(buf)) > 0) {
-//                    fos.write(buf, 0, bytesRead);
-//                    fos.flush();
-//                    context.progress();
-//                }
-//                fos.close();
-//                fis.close();
-//            }
-//        }
+        localFileSpt = WORKING_DIR+nombreImagen+NOMBRE_IMAGEN_SPT;
+        
+        copiarArchivoLocalmente(context, nombreImagenSpt, localFileSpt);
+      
         System.out.println("Map1 finalizo lectura y guardado de "+nombreImagenSpt);
         
         //"../resources/map1/src/map1.sh"  , , " > salida.out"
@@ -147,6 +131,8 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         
         context.progress(); 
         
+        clean(WORKING_DIR, nombreImagen);
+        
         
         String archivoResultado = nombreImagen+NOMBRE_IMAGEN_RES;
         
@@ -157,22 +143,66 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         context.write(new Text(archivoResultado), new BytesWritable(buffer));
 
 	}
+
+	/**
+	 * @param context
+	 * @param remoteFile
+	 * @param localFile
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 * @throws FileNotFoundException
+	 */
+	private void copiarArchivoLocalmente(Context context, String remoteFile, String localFile)
+			throws IOException, IllegalArgumentException, FileNotFoundException {
+        
+        try (FSDataInputStream fis = FileSystem.get(context.getConfiguration()).open(new Path(remoteFile))) {
+            File archivo = new File(localFile);
+            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+                byte[] buf = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buf)) > 0) {
+                    fos.write(buf, 0, bytesRead);
+                    fos.flush();
+                    context.progress();
+                }
+                fos.close();
+                fis.close();
+            }
+        }
+        
+	}
 	
-	// // crearArchivoParaMap2(nombreImagen);
-//	private void crearArchivoParaMap2(String nombreImagen) throws IOException{
-//		String ruta = WORKING_DIR+"list_images.txt";
-//		File archivo = new File(ruta);
-//		BufferedWriter bw;
-//	        if(archivo.exists()) {
-//	        	archivo.delete();
-//	            bw = new BufferedWriter(new FileWriter(archivo));
-//	            bw.write(nombreImagen);
-//	        } else {
-//	            bw = new BufferedWriter(new FileWriter(archivo));
-//	            bw.write(nombreImagen);
-//	        }
-//	        bw.close();
-//		
-//	}
+	/**
+	 * Borra los archivos intermedios locales una vez finalizado el procesamiento 
+	 */
+    private void clean(String workingDir , String nombreImagen){
+    	
+    	String[] archs = new String[14];
+    	archs[0] = workingDir+nombreImagen+"_raw.fits.conv.fits.cro.fits";
+    	archs[1] = workingDir+nombreImagen+"_raw.fits.conv.fits.crr.fits";
+    	archs[2] = workingDir+nombreImagen+"_raw.fits.conv.fits.cro.fits.cat";
+    	archs[3] = workingDir+nombreImagen+"_raw.fits.conv.fits";
+    	archs[4] = workingDir+nombreImagen+"_raw.fits.head";
+    	archs[5] = workingDir+nombreImagen+"_spt.fits.head";
+    	archs[6] = workingDir+"sptdata.txt";
+    	archs[7] = workingDir+"rawdata.txt";
+    	archs[8] = workingDir+"list_images.txt";
+    	archs[9] = workingDir+"default.sex";
+    	archs[10] = workingDir+"darks";
+    	archs[11] = workingDir+"cdarks";
+    	archs[12] = localFileRaw;
+    	archs[13] = localFileSpt;
+ 
+    	
+    	for (String arch : archs) {
+    		File fichero = new File(arch);
+    		 if (fichero.delete())
+    	            System.out.println("El archivo "+arch+" ha sido borrado ");
+    	         else
+    	            System.out.println("El archivo "+arch+" no puede ser borrado");
+		}
+       
+    	
+    }
 	
 }
