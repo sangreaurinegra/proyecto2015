@@ -4,11 +4,11 @@
 if (defpar ("logver"))
     logver = "IRAF V2.16 March 2012"
 
-set	home		= "/root/victor/"
-set	imdir		= "/tmp//"
+set	home		= "/home/gabriel/Facu/proyecto/repo/proyecto2015/resources/map1/src/"
+set	imdir		= "/tmp/gabriel/"
 set	cache		= "U_CACHEDIR"
 set	uparm		= "home$uparm/"
-set	userid		= ""
+set	userid		= "gabriel"
 
 # Set the terminal type.  We assume the user has defined this correctly 
 # when issuing the MKIRAF and no longer key off the unix TERM to set a
@@ -64,7 +64,7 @@ task	$nbugs = ("$(setenv EDITOR 'buglog -e';" //
 task	$cls = "$clear;ls"
 task	$clw = "$clear;w"
 task	$pg = ("$(less -Cqm $*)")
-task	rayocosmico2 = /root/victor/rayocosmico2.cl
+task	rayocosmico2 = /home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/map1/src/rayocosmico2.cl
 
 if (access ("home$loginuser.cl"))
     cl < "home$loginuser.cl"
