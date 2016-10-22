@@ -27,7 +27,7 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
 	
 	public static String NOMBRE_IMAGEN_RES = "_res.txt";
 	
-	public static String WORKING_DIR = "/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/workingdir/";
+	public static String WORKING_DIR = "/root/workingdir/";//"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/workingdir/";
 	
 	String localFileRaw = "";
 	String localFileSpt = "";
@@ -65,7 +65,7 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         
         System.out.println("Map1 comienza a leer y guardar "+nombreImagenRaw);
         
-        localFileRaw = WORKING_DIR+nombreImagen+NOMBRE_IMAGEN_RAW; // TODO
+        localFileRaw = getWorkingDir()+nombreImagen+NOMBRE_IMAGEN_RAW;
         
         copiarArchivoLocalmente(context, nombreImagenRaw, localFileRaw);
         
@@ -74,7 +74,7 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         String nombreImagenSpt = rutaNombreImagen+NOMBRE_IMAGEN_SPT;
         System.out.println("Map1 comienza a leer y guardar "+nombreImagenSpt);
         
-        localFileSpt = WORKING_DIR+nombreImagen+NOMBRE_IMAGEN_SPT;
+        localFileSpt = getWorkingDir()+nombreImagen+NOMBRE_IMAGEN_SPT;
         
         copiarArchivoLocalmente(context, nombreImagenSpt, localFileSpt);
       
@@ -83,9 +83,9 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         //"../resources/map1/src/map1.sh"  , , " > salida.out"
         
         Process process = null;
-        ProcessBuilder processBuilder = new ProcessBuilder("bash",WORKING_DIR+"map1.sh", nombreImagen, "> salida.out" , "2> salida.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
+        ProcessBuilder processBuilder = new ProcessBuilder("bash",getWorkingDir()+"map1.sh", nombreImagen, "> salida.out" , "2> salida.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
         
-        processBuilder.directory(new File(WORKING_DIR));
+        processBuilder.directory(new File(getWorkingDir()));
 		
         process = processBuilder.start();
         
@@ -108,9 +108,9 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         context.progress();        
         
         Process process2 = null;
-        ProcessBuilder processBuilder2 = new ProcessBuilder("bash",WORKING_DIR+"map2.sh","> salida2.out" , "2> salida2.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
+        ProcessBuilder processBuilder2 = new ProcessBuilder("bash",getWorkingDir()+"map2.sh","> salida2.out" , "2> salida2.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
         
-        processBuilder2.directory(new File(WORKING_DIR));
+        processBuilder2.directory(new File(getWorkingDir()));
 		
         process2 = processBuilder2.start();
         
@@ -131,12 +131,12 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         
         context.progress(); 
         
-        clean(WORKING_DIR, nombreImagen);
+        clean(getWorkingDir(), nombreImagen);
         
         
         String archivoResultado = nombreImagen+NOMBRE_IMAGEN_RES;
         
-        byte[] buffer = readFileToByteArray(new File(WORKING_DIR+archivoResultado));
+        byte[] buffer = readFileToByteArray(new File(getWorkingDir()+archivoResultado));
         
         
         // context.write(key, salida); para el reducer
@@ -205,4 +205,13 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
     	
     }
 	
+    public String getWorkingDir(){
+    	String ret = System.getenv("WORKING_DIR");
+    	if(ret == null){
+    		ret = WORKING_DIR;
+    	}
+    	
+    	return ret;
+    }
+    
 }

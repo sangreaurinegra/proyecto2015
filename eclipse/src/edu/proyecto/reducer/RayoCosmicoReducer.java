@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -23,7 +22,6 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text, BytesWritable, Text, 
     Configuration conf = null;
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void setup(Context context)
             throws IOException, InterruptedException {
         conf = context.getConfiguration();
@@ -34,7 +32,6 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text, BytesWritable, Text, 
     	
         System.out.println("Entro al reducer!!");
         System.out.println("Key del reducer: " + key);
-//        FileSystem fs;
         try {
 
             if (zipFileWriter == null) {
@@ -47,8 +44,6 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text, BytesWritable, Text, 
             } else {
                 System.out.println("Existe zipFileWriter " + NOMBRE_ARCHIVO_ZIP);
             }
-
-//            fs = FileSystem.get(context.getConfiguration());
             
             for (BytesWritable t : values) {
                 System.out.println("Agregando a Zip Resultado " + key.toString());

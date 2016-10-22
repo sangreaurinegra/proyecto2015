@@ -14,7 +14,6 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-import edu.proyecto.file.KeyImage;
 import edu.proyecto.maper.RayoCosmicoMapper;
 import edu.proyecto.reducer.RayoCosmicoReducer;
 

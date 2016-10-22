@@ -6,7 +6,6 @@
 package edu.proyecto.file;
 
 import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Logger;
@@ -23,17 +22,15 @@ import org.apache.hadoop.fs.Path;
  */
 public class ZipFileWriter {
 	Logger log = Logger.getLogger("log_file");
- //   private String rootDir;
     private String zipFileName;
     private ZipOutputStream zipOutputStream;
-    //private FileOutputStream fileOutputStream;
     OutputStream os;
     
-    public static String WORKING_DIR = "/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
+    public static String WORKING_DIR = "/root/workingdir/"; //"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
     
     
     public ZipFileWriter(String name) {
-    	zipFileName = WORKING_DIR + name + ".zip";
+    	zipFileName = getWorkingDir() + name + ".zip";
     }
 
     public void setup(Configuration conf) {
@@ -82,4 +79,14 @@ public class ZipFileWriter {
     public ZipOutputStream getZipOutputStream(){
         return zipOutputStream;
     }
+    
+    public String getWorkingDir(){
+    	String ret = System.getenv("WORKING_DIR");
+    	if(ret == null){
+    		ret = WORKING_DIR;
+    	}
+    	
+    	return ret;
+    }
+    
 }
