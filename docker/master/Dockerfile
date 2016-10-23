@@ -7,6 +7,10 @@ MAINTAINER SangreAurinegra <sangreaurinegra@gmail.com>
 
 RUN rm /root/run-wordcount.sh
 
-ADD resources/ /root/resources/
-ADD input/ /root/input/
-ADD output/ /root/output/
+ADD workingdir/ /root/workingdir/
+
+ENV WORKING_DIR /root/workingdir/
+
+#ADD resources/ /root/resources/
+#ADD input/ /root/input/
+#ADD output/ /root/output/

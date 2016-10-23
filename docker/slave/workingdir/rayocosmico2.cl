@@ -15,7 +15,7 @@ begin
 	string imagen
 	s7 = ""
 	inputFile="input.txt"
-	!ls *.fits > fitsFiles.txt
+	#!ls *.fits > fitsFiles.txt
 	if(fscan(inputFile,s1)!=EOF)
 	{
 		hselect(s1//"_raw.fits[1]","TARGNAME", expr="yes") | scan(s2)
