@@ -2,7 +2,10 @@
 
 if [ -z "$1" ]
 then
-        echo "No se recibio el parametro"
+        echo "No se recibio el nombre del archivo"
+elif ! [ -f "$1" ]
+then
+	echo "No se encontro el archivo"
 else
 	eval `/home/gabriel/.ureka/ur_setup`
 
@@ -16,8 +19,5 @@ else
 
 	cl < clInput.txt > cl.out 2> cl.err
 fi
-
-
-
 
 
