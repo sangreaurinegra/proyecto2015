@@ -83,7 +83,7 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         //"../resources/map1/src/map1.sh"  , , " > salida.out"
         
         Process process = null;
-        ProcessBuilder processBuilder = new ProcessBuilder("bash",getWorkingDir()+"map1.sh", nombreImagen, "> salida.out" , "2> salida.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
+        ProcessBuilder processBuilder = new ProcessBuilder("bash","--init-file "+getWorkingDir()+"bash_ini.sh", getWorkingDir()+"map1.sh", nombreImagen, "> salida.out" , "2> salida.err" ); // el sh se encarga de generar los nombres de raw y spt para el procesamiento
         
         processBuilder.directory(new File(getWorkingDir()));
 		
