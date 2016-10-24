@@ -41,6 +41,8 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text, BytesWritable, Text, 
                 zipFileWriter.openZipForWriting();
             
                 System.out.println("Guarde Zip " + NOMBRE_ARCHIVO_ZIP);
+                
+                
             } else {
                 System.out.println("Existe zipFileWriter " + NOMBRE_ARCHIVO_ZIP);
             }

@@ -26,11 +26,11 @@ public class ZipFileWriter {
     private ZipOutputStream zipOutputStream;
     OutputStream os;
     
-    public static String WORKING_DIR = "/root/workingdir/"; //"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
+    public static String OUTPUT_DIR = "/output/"; //"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
     
     
     public ZipFileWriter(String name) {
-    	zipFileName = getWorkingDir() + name + ".zip";
+    	zipFileName =  OUTPUT_DIR + name + ".zip";
     }
 
     public void setup(Configuration conf) {
@@ -64,12 +64,14 @@ public class ZipFileWriter {
             textContent = "No text extracted";
         }
         zipOutputStream.write(textContent.getBytes());
+        log.info("write:  " + "entryName " + entryName + " textContent " + textContent);
     }
 
     public void addBinaryFile(String entryName, byte[] fileContent, int length) throws IOException {
         ZipEntry zipEntry = new ZipEntry(entryName);
         zipOutputStream.putNextEntry(zipEntry);
         zipOutputStream.write(fileContent, 0, length);
+        log.info("addBinaryFile: entryName " + entryName + " length "+ length );
     }
 
     public String getZipFileName() {
@@ -78,15 +80,6 @@ public class ZipFileWriter {
     
     public ZipOutputStream getZipOutputStream(){
         return zipOutputStream;
-    }
-    
-    public String getWorkingDir(){
-    	String ret = System.getenv("WORKING_DIR");
-    	if(ret == null){
-    		ret = WORKING_DIR;
-    	}
-    	
-    	return ret;
     }
     
 }

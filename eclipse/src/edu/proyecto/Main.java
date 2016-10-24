@@ -40,16 +40,16 @@ public class Main extends Configured implements Tool {
 		}
 		//Configuration
 		Configuration conf = new Configuration();
-		conf.set("mapreduce.map.memory.mb", "1400");
-		conf.set("mapreduce.reduce.memory.mb", "2800");
-		conf.set("mapreduce.map.java.opts", "-Xmx1120m");
-		conf.set("mapreduce.reduce.java.opts", "-Xmx2240m");
-		conf.set("yarn.app.mapreduce.am.resource.mb", "2800");
-		conf.set("yarn.app.mapreduce.am.command-opts", "-Xmx2240m");
-		conf.set("yarn.nodemanager.resource.memory-mb", "5040");
-		conf.set("yarn.scheduler.minimum-allocation-mb", "1400");
-		conf.set("yarn.scheduler.maximum-allocation-mb", "5040");
-		conf.set("mapreduce.task.timeout", "18000000");//5 horas
+//		conf.set("mapreduce.map.memory.mb", "1400");
+//		conf.set("mapreduce.reduce.memory.mb", "2800");
+//		conf.set("mapreduce.map.java.opts", "-Xmx1120m");
+//		conf.set("mapreduce.reduce.java.opts", "-Xmx2240m");
+//		conf.set("yarn.app.mapreduce.am.resource.mb", "2800");
+//		conf.set("yarn.app.mapreduce.am.command-opts", "-Xmx2240m");
+//		conf.set("yarn.nodemanager.resource.memory-mb", "5040");
+//		conf.set("yarn.scheduler.minimum-allocation-mb", "1400");
+//		conf.set("yarn.scheduler.maximum-allocation-mb", "5040");
+//		conf.set("mapreduce.task.timeout", "18000000");//5 horas
 
 //		conf.set("mapreduce.framework.name", "local");		
 		
