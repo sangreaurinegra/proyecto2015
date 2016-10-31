@@ -25,19 +25,21 @@ public class ZipFileWriter {
     private String zipFileName;
     private ZipOutputStream zipOutputStream;
     OutputStream os;
+    Path path ;
     
-    public static String OUTPUT_DIR = "/output/"; //"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
+    public static String OUTPUT_DIR = "output/"; //"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
     
     
     public ZipFileWriter(String name) {
     	zipFileName =  OUTPUT_DIR + name + ".zip";
+    	path = new Path(zipFileName);
     }
 
+   
     public void setup(Configuration conf) {
     	FileSystem fs;
     	try {
     		fs = FileSystem.get(conf);
-    		Path path = new Path(zipFileName);
     		os = fs.create(path);
     	} catch (IOException e) {
     		e.printStackTrace();
