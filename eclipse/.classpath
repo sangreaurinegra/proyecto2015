@@ -104,7 +104,7 @@
 	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/lib/jackson-mapper-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/hadoop-mapreduce-client-app-2.6.4.jar"/>
-	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.6.4.jar"/>
+	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.6.4.jar" sourcepath="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/sources/hadoop-mapreduce-client-core-2.6.4-sources.jar"/>
 	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/hadoop-mapreduce-client-common-2.6.4.jar"/>
 	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.6.4.jar"/>
 	<classpathentry kind="lib" path="/home/gabriel/Facu/proyecto/repo/proyecto2015/HadoopTest/hadoop-2.6.4/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-plugins-2.6.4.jar"/>

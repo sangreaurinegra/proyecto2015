@@ -37,16 +37,13 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text, BytesWritable, Text, 
             if (zipFileWriter == null) {
                 System.out.println("Creando zip " + NOMBRE_ARCHIVO_ZIP);
                 zipFileWriter = new ZipFileWriter(NOMBRE_ARCHIVO_ZIP);//set subjob id
-                
-                System.out.println("Guarde Zip " + NOMBRE_ARCHIVO_ZIP);
+                System.out.println("Guarde Zip " + NOMBRE_ARCHIVO_ZIP);                
+                zipFileWriter.setup(conf);
+                zipFileWriter.openZipForWriting();
                 
             } else {
                 System.out.println("Existe zipFileWriter " + NOMBRE_ARCHIVO_ZIP);
             }
-            
-            zipFileWriter.setup(conf);
-            
-            zipFileWriter.openZipForWriting();
             
             for (BytesWritable t : values) {
                 System.out.println("Agregando a Zip Resultado " + key.toString());
@@ -57,14 +54,18 @@ public class RayoCosmicoReducer<Key> extends Reducer<Text, BytesWritable, Text, 
             zipFileWriter.getZipOutputStream().flush();
             
             System.out.println("flush");
-            zipFileWriter.closeZip();
             
-            System.out.println("Cerre ZIP");
-
         } catch (Exception e) {
         	e.printStackTrace(System.out);
             System.out.println(e.getMessage());
         }
     }
 	
+    @Override
+    protected void cleanup(Context context
+    		) throws IOException, InterruptedException {
+    	zipFileWriter.closeZip();
+    	System.out.println("Cerre ZIP");
+    }
+    
 }

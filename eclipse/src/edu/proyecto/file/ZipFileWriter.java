@@ -24,8 +24,9 @@ public class ZipFileWriter {
 	Logger log = Logger.getLogger("log_file");
     private String zipFileName;
     private ZipOutputStream zipOutputStream;
-    OutputStream os;
+    OutputStream outputstream;
     Path path ;
+    FileSystem fileSystem;
     
     public static String OUTPUT_DIR = "output/"; //"/home/gabriel/Escritorio/proyecto/repo/proyecto2015/resources/entrada/";
     
@@ -37,10 +38,11 @@ public class ZipFileWriter {
 
    
     public void setup(Configuration conf) {
-    	FileSystem fs;
     	try {
-    		fs = FileSystem.get(conf);
-    		os = fs.create(path);
+    		fileSystem = FileSystem.get(conf);
+    		if(outputstream == null){
+    			outputstream = fileSystem.create(path);
+    		}
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
@@ -50,13 +52,13 @@ public class ZipFileWriter {
     public void openZipForWriting() throws IOException {
     	
         //fileOutputStream = new FileOutputStream(zipFileName);
-        zipOutputStream = new ZipOutputStream(new BufferedOutputStream(os));
+        zipOutputStream = new ZipOutputStream(new BufferedOutputStream(outputstream));
         log.info("Abierto:  " + zipFileName);
     }
 
     public void closeZip() throws IOException {
         zipOutputStream.close();
-        os.close();
+        outputstream.close();
     }
 
     public void addTextFile(String entryName, String textContent) throws IOException {
