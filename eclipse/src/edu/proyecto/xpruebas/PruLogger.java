@@ -11,6 +11,9 @@ public class PruLogger {
 	public static void main(String[] args) {
 	
 		logger.info("Inicio");
+
+
 	}
+
 
 }

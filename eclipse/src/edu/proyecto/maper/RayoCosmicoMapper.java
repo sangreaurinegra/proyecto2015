@@ -17,7 +17,9 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.file.tfile.ByteArray;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.codehaus.jackson.util.ByteArrayBuilder;
 
 public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWritable> { //extends Mapper<LongWritable, Text, LongWritable, Text> {
 
@@ -139,9 +141,32 @@ public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWri
         
         byte[] buffer = readFileToByteArray(new File(getWorkingDir()+archivoResultado));
         
+        if( buffer != null ){
+        	// context.write(key, salida); para el reducer
+        	System.out.println("Enviando archivo resultado al Reduce "+archivoResultado);
+            context.write(new Text(archivoResultado), new BytesWritable(buffer));
+        }
+        else{
+        	System.out.println("Probando con salida2.out");
+        	buffer = readFileToByteArray(new File(getWorkingDir()+"salida2.out"));
+        	if(buffer != null){
+        		System.out.println("Enviando archivo resultado al Reduce "+archivoResultado+"_s2");
+        		context.write(new Text(archivoResultado+"_s2"), new BytesWritable(buffer));
+        	}else{
+        		System.out.println("Probando con salida.out");
+        		buffer = readFileToByteArray(new File(getWorkingDir()+"salida.out"));
+        		if(buffer != null){
+        			System.out.println("Enviando archivo resultado al Reduce "+archivoResultado+"_s");
+        			context.write(new Text(archivoResultado+"_s"), new BytesWritable(buffer));
+        		}else{
+        			System.out.println("Enviando ERROR al Reduce "+archivoResultado+"_s");
+        			buffer = "Error".getBytes();
+        			context.write(new Text(archivoResultado+"_Error"), new BytesWritable(buffer));
+        		}
+        		
+        	}
+        }
         
-        // context.write(key, salida); para el reducer
-        context.write(new Text(archivoResultado), new BytesWritable(buffer));
 
 	}
 

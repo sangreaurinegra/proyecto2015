@@ -55,33 +55,14 @@ public class Main extends Configured implements Tool {
 		
 		Job job = Job.getInstance(conf, "Rayo Cosmico Conf");
 		
-//		job.setInputFormatClass(WholeFileInputFormat.class); // TODO eliminar incluso el lector de file total , se lee lista con nombre de img por entrada multiple por map
 		
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 	    FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		
 	    
-//   
-//        MultipleOutputs.addNamedOutput(job, "controloutput", TextOutputFormat.class, Text.class, Text.class);
-//        MultipleOutputs.addNamedOutput(job, "error", TextOutputFormat.class, Text.class, Text.class);
-//	    
-//	    Ver pada distribuir a los nodos los archivos TODO como mejora
-//	    job.addCacheFile(new Path("wasb:///mcell.exe").toUri());
-//        job.addCacheFile(new Path("wasb:///fernet.exe").toUri());
-	    
 	    job.setJarByClass(Main.class);
 	    
-		job.setMapperClass(RayoCosmicoMapper.class); // TODO cambiar por el map chain
-        
-//        TODO map chain deshabilitado probando solo primer mapper.
-//        Configuration map1Conf = new Configuration(false);
-//        ChainMapper.addMapper(job, RayoCosmicoMapper.class, Text.class, IntWritable.class,
-//        		Text.class, IntWritable.class, map1Conf);
-//        
-//        Configuration map2Conf = new Configuration(false);
-//        ChainMapper.addMapper(job, IdemCr.class, Text.class, IntWritable.class,
-//        		Text.class, IntWritable.class, map2Conf);
-        
+		job.setMapperClass(RayoCosmicoMapper.class);      
         
 	    job.setReducerClass(RayoCosmicoReducer.class);
 		job.setOutputKeyClass(Text.class);
