@@ -17,9 +17,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.file.tfile.ByteArray;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.codehaus.jackson.util.ByteArrayBuilder;
 
 public class RayoCosmicoMapper extends Mapper<LongWritable, Text, Text, BytesWritable> { //extends Mapper<LongWritable, Text, LongWritable, Text> {
 
